@@ -26,17 +26,24 @@ TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID", "")
 
 # ── Zu überwachende URLs ──────────────────────────────────────
 URLS = [
-    "https://reservierung.derhimmelderbayern.de/reservierung",
-    # Weitere URLs hier hinzufügen:
-    # "https://www.hofbraeuhaus.de/de/reservierung.html",
-    # "https://www.loewenbraeu-oktoberfest.de/reservierung",
+    "https://reservierung.derhimmelderbayern.de/reservierung",       # Himmel der Bayern
+    "https://reservierung.hb-festzelt.de/reservierung",              # Hofbräu-Festzelt
+    "https://reservierung.armbrustschuetzenzelt.de/reservierung",    # Armbrustschützenzelt
+    "https://www.festhalle-augustiner.com/reservierung/",            # Festhalle Augustiner
+    "https://reservierung.braeurosl.de/reservation/",                # Bräurosl
+    "https://reservierung.fischer-vroni.de/reservation",             # Fischer-Vroni
+    "https://reservierung.loewenbraeuzelt.de/reservierung",          # Löwenbräuzelt
+    "https://reservierung.ochsenbraterei.de/reservierungen",         # Ochsenbraterei
+    "https://reservierung.festhalle-schottenhamel.de/reservation/",  # Schottenhamel
+    "https://reservierung.schuetzenfestzelt.com/reservation/",       # Schützenfestzelt
+    "https://reservierung.paulanerfestzelt.de/reservierung",         # Paulaner Festzelt
 ]
 
 # ── Schlüsselwörter, die eine Benachrichtigung auslösen ───────
 # Wenn neue Dropdown-Optionen diese Wörter enthalten, bist du sofort dabei.
 RELEVANT_KEYWORDS = [
     "Freitag", "Samstag", "Donnerstag", "Mittwoch", "Dienstag", "Montag", "Sonntag",
-    "Abend", "abend", "18:", "19:", "20:", "21:", "22:", "23:",
+    "Abend", "abend", "Abends", "abends", "Nachmittags", "Nachmittag", "nachmittags", "nachmittag", "15:", "16:", "17:", "18:", "19:", "20:", "21:", "22:", "23:",
     "available", "verfügbar",
 ]
 
