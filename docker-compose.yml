@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  wiesn-monitor:
+    image: mcr.microsoft.com/playwright/python:v1.44.0-jammy
+    container_name: wiesn-monitor
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: >
+      bash -c "pip install -r requirements.txt --quiet &&
+               playwright install chromium &&
+               python monitor.py"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
