@@ -1,0 +1,54 @@
+name: Wiesn Reservierungsmonitor
+
+on:
+  schedule:
+    # Alle 5 Minuten prüfen (GitHub Actions Minimum: 5 Min)
+    - cron: "*/5 * * * *"
+  workflow_dispatch:   # Manueller Start möglich
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Letzten State wiederherstellen
+        uses: actions/cache@v4
+        with:
+          path: state.json
+          key: wiesn-state-${{ github.run_id }}
+          restore-keys: |
+            wiesn-state-
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Abhängigkeiten installieren
+        run: |
+          pip install -r requirements.txt --quiet
+          playwright install chromium --with-deps
+
+      - name: Monitor ausführen (Einzellauf)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          EMAIL_ENABLED:      ${{ secrets.EMAIL_ENABLED }}
+          EMAIL_USER:         ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD:     ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECIPIENT:    ${{ secrets.EMAIL_RECIPIENT }}
+          CHECK_INTERVAL_MINUTES: "0"   # Einmaliger Lauf, kein Loop
+        run: python monitor_once.py    # Einzel-Wrapper (siehe unten)
+
+      - name: State sichern (Artefakt)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wiesn-state
+          path: state.json
+          retention-days: 7
